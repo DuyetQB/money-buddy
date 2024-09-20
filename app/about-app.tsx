@@ -29,6 +29,13 @@ export default function AboutAppScreen() {
 
                         What sets Money Buddy apart from other financial apps is its focus on user-friendly functionality and personalized financial insights. Unlike other apps that can be overwhelming or cluttered with unnecessary features, Money Buddy keeps things straightforward, allowing you to focus on what truly matters: understanding and improving your financial health. The app offers customizable categories, real-time updates, and detailed reports, helping you stay on top of your finances without the hassle.
 
+                    </ThemedText>
+                    <Image source={require("@/assets/images/about-image.png")} style={{
+                        width: 320,
+                        height: 220
+                    }} />
+                    <ThemedText style={styles.textContent}>
+
                         With Money Buddy, you’re not just tracking your money—you’re actively managing it. The app empowers you to make informed financial decisions, optimize your budget, and ultimately achieve your financial goals. Whether you're a student, a professional, or someone simply looking to take control of your finances, Money Buddy is the ideal tool to help you succeed financially.
                     </ThemedText>
                 </ThemedView>

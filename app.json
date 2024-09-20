@@ -1,14 +1,14 @@
 {
   "expo": {
     "name": "money-buddy",
-    "slug": "money-buddy",
+    "slug": "moneybuddy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash-image.png",
+      "image": "./assets/images/splash-image-main.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,11 +16,12 @@
       "supportsTablet": true
     },
     "android": {
+      "icon": "./assets/images/logo.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/splash-image.png",
+        "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.lenodev.moneybuddy"
+      "package": "com.lenodev.studio.moneybuddy"
     },
     "web": {
       "bundler": "metro",
@@ -38,8 +39,16 @@
         "origin": false
       },
       "eas": {
-        "projectId": "661debbc-c032-40f8-a2e4-eddd67fb28e"
-      }
+        "projectId": "5610c1bd-790a-4546-82cb-dcd659ae6046"
+      },
+      "owner": "lenodev.studio"
+    },
+    "owner": "lenodev.studio",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5610c1bd-790a-4546-82cb-dcd659ae6046"
     }
   }
 }

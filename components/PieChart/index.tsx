@@ -17,9 +17,9 @@ import { width } from '@/utils/common';
 type PieChartProps = {
     size?: number;
     strokeWidth?: number;
-    showContent?:boolean,
-    colors?:any[]
-    dataChart?:any[]
+    showContent?: boolean,
+    colors?: any[]
+    dataChart?: any[]
 };
 
 export type PieChartDataItem = {
@@ -87,7 +87,7 @@ export const PieChartSegment: FC<{
         );
     };
 
-export const PieChart = ({ size = 200, strokeWidth = 20 , showContent = false, dataChart = []}: PieChartProps) => {
+export const PieChart = ({ size = 200, strokeWidth = 20, showContent = false, dataChart = [] }: PieChartProps) => {
     const progress = useSharedValue(0);
     const [data, setData] = React.useState<PieChartData>([]);
     const [startAngles, setStartAngles] = React.useState<number[]>([]);
@@ -102,7 +102,7 @@ export const PieChart = ({ size = 200, strokeWidth = 20 , showContent = false, d
         const angles: number[] = [];
         dataChart?.forEach((item: any) => {
             angles.push(angle);
-            angle += item.value  * 360;
+            angle += item.value * 360;
         });
 
         const pieValue = dataChart?.map((rc) => {
@@ -149,10 +149,10 @@ export const PieChart = ({ size = 200, strokeWidth = 20 , showContent = false, d
             <ThemedView style={{
                 height: 400,
                 flex: 1,
-                padding:10,
-                width:width
+                padding: 10,
+                width: width
             }}>
-                <Svg viewBox={`0 0 ${size } ${size}`} fill={ThemeColors.greenLight} style={{ zIndex:-1}}>
+                <Svg viewBox={`0 0 ${size} ${size}`} fill={ThemeColors.greenLight} style={{ zIndex: -1 }}>
                     {data.map((item, index) => (
                         <PieChartSegment
                             key={`${item.color}-${index}`}
@@ -169,19 +169,19 @@ export const PieChart = ({ size = 200, strokeWidth = 20 , showContent = false, d
                     ))}
                 </Svg>
                 {showContent && (
-                <ThemedView style={styles.containerContent
-                }>
-                    {dataChart?.map((rc: any, index: number) => (
-                        <ThemedView key={index} style={styles.content
-                        }>
-                            <ThemedView style={[styles.radius, { backgroundColor: rc.color }]}></ThemedView>
-                            <ThemedText>{caculatePercent(rc.value) || 0} %</ThemedText>
-                            <ThemedText>{rc.label}</ThemedText>
-                        </ThemedView>
-                    ))}
+                    <ThemedView style={styles.containerContent
+                    }>
+                        {dataChart?.map((rc: any, index: number) => (
+                            <ThemedView key={index} style={styles.content
+                            }>
+                                <ThemedView style={[styles.radius, { backgroundColor: rc.color }]}></ThemedView>
+                                <ThemedText>{caculatePercent(rc.value) || 0} %</ThemedText>
+                                <ThemedText>{rc.label}</ThemedText>
+                            </ThemedView>
+                        ))}
 
-                </ThemedView>
-            )}
+                    </ThemedView>
+                )}
             </ThemedView>
         </View>
     );

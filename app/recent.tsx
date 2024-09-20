@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, useColorScheme, FlatList } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useCallback, useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { formattedDate } from '@/utils/date';
 import { useSelector } from 'react-redux';
 import { requestLisDataTasks } from '@/states/data';
 import EmptyComponent from '@/assets/svg/Empty';
+import { FlashList } from "@shopify/flash-list";
 import { Stack } from 'expo-router';
 
 
@@ -25,7 +26,7 @@ export default function RecentScreen() {
 
     const getTable = useCallback(async () => {
         const allRows: any = await db.getAllAsync('SELECT * FROM dataTask');
-        setDataItem(allRows)
+        setDataItem(allRows || [])
     }, [db])
 
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function RecentScreen() {
     }, [db])
 
     useEffect(() => {
-        if (requestTable) {
+        if (requestTable && requestTable.money !== 0) {
             setDataItem((prev): any => [...prev, requestTable])
         }
         else {
@@ -67,11 +68,11 @@ export default function RecentScreen() {
                     </>
 
                 )}
-                <FlatList
+                <FlashList
                     data={dataItem}
-
-                    renderItem={({ item, index }: { item: any, index: number }) => (
-                        <ThemedView style={styles.categoryContainer} key={index}>
+                    estimatedItemSize={30}
+                    renderItem={({ item }: { item: any }) => (
+                        <ThemedView style={styles.categoryContainer}>
                             <ThemedView style={{
                                 display: 'flex',
                                 flexDirection: 'row',

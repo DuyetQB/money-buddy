@@ -15,6 +15,11 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+
+export const unstable_settings = {
+  // Ensure any route can link back to `/`
+  initialRouteName: 'Onboarding',
+};
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
@@ -34,22 +39,25 @@ export default function RootLayout() {
     return null;
   }
 
+
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
 
-    <Provider store={store}>
-       <Portal.Host>
+      <Provider store={store}>
+        <Portal.Host>
 
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="recent" />
-      </Stack>
-      <GlobalUI />
-    </ThemeProvider>
-    </Portal.Host>
-    </Provider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack initialRouteName="Onboarding">
+              <Stack.Screen name="Onboarding" />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+              <Stack.Screen name="recent" />
+            </Stack>
+            <GlobalUI />
+          </ThemeProvider>
+        </Portal.Host>
+      </Provider>
     </GestureHandlerRootView>
   );
 }

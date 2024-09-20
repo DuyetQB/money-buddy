@@ -1,10 +1,8 @@
+import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, ScrollView, useColorScheme, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, useColorScheme, TouchableOpacity, Image } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-// import {
-//     PieChart,
-// } from "react-native-chart-kit";
 import { ActiveTabs } from '@/components/ActiveTabs';
 import { useCallback, useEffect, useState } from 'react';
 import { tabsDataFilterChart } from '@/data/tabDate';
@@ -15,13 +13,13 @@ import { ThemeColors } from '@/constants/ThemeColors';
 import { formattedDate } from '@/utils/date';
 import { useSelector } from 'react-redux';
 import { requestLisDataTasks } from '@/states/data';
-import EmptyComponent from '@/assets/svg/Empty';
+// import EmptyComponent from '@/assets/svg/Empty';
 import { PieChart } from '@/components/PieChart';
 import { useNavigation } from '@react-navigation/native';
 import { dataSelectIncome, dataSelectSpent } from '@/data/select';
-// import PieChartDoughnut from 'react-native-pie-chart'
 
 const db = SQLite.openDatabaseSync('mydatabase');
+
 
 export default function ReportsScreen() {
 
@@ -36,7 +34,7 @@ export default function ReportsScreen() {
 
     const getTable = useCallback(async () => {
         const allRows: any = await db.getAllAsync('SELECT * FROM dataTask');
-        setDataItem(allRows)
+        setDataItem(allRows || [])
     }, [db])
 
     useEffect(() => {
@@ -45,7 +43,7 @@ export default function ReportsScreen() {
     }, [db])
 
     useEffect(() => {
-        if (requestTable) {
+        if (requestTable && requestTable.money !== 0) {
             setDataItem((prev): any => [...prev, requestTable])
         }
         else {
@@ -69,34 +67,34 @@ export default function ReportsScreen() {
     const getDataLengthOthers = useCallback(() => {
         // const other = ['Cosmetics', 'Daily spent', 'Cloths', 'Electricity bill', 'Diary Products'];
         const otherSpent = ['19', '12', '13', '16'];
-        const otherIncome = [ '5'];
-        const other = activeTab === 'Income' ? otherIncome : activeTab === 'Spent' ? otherSpent:otherSpent;
-        
+        const otherIncome = ['5'];
+        const other = activeTab === 'Income' ? otherIncome : activeTab === 'Spent' ? otherSpent : otherSpent;
+
         const dataCount = dataItem.filter((rc: any) => {
             return other.includes(rc.category)
 
         }).length;
 
-        return dataCount/dataItem.length
-    },[dataItem])
-    
-    const dataPieSpent = [
-        { value:getDataLength('11'), label: "Eat & Drink", color:ThemeColors.pinkLight},
-        {  value: getDataLength('14'), label: "Rents", color:ThemeColors.primary },
-        {  value: getDataLength('17'), label: "Education" , color:ThemeColors.pink},
-        { value:  getDataLength('20'), label: "Medical" , color:ThemeColors.blueLight},
-        { value: getDataLength('18'), label: "Travel" , color:ThemeColors.blueSea},
-        { value: getDataLengthOthers(), label: "Others" , color:ThemeColors.yellowThin},
-      ];
-    const dataPieIncome = [
-        { value:getDataLength('1'), label: "Salary", color:ThemeColors.pinkLight},
-        {  value: getDataLength('2'), label: "Retirement money", color:ThemeColors.primary },
-        {  value: getDataLength('4'), label: "Invest" , color:ThemeColors.pink},
-        { value:  getDataLength('3'), label: "Secondary income" , color:ThemeColors.blueLight},
-        { value: getDataLength('5'), label: "Electricity bill" , color:ThemeColors.blueSea},
-        { value: getDataLength('6'), label: "Temporary income" , color:ThemeColors.yellowThin},
+        return dataCount / dataItem.length
+    }, [dataItem])
 
-      ];
+    const dataPieSpent = [
+        { value: getDataLength('11'), label: "Eat & Drink", color: ThemeColors.pinkLight },
+        { value: getDataLength('14'), label: "Rents", color: ThemeColors.primary },
+        { value: getDataLength('17'), label: "Education", color: ThemeColors.pink },
+        { value: getDataLength('20'), label: "Medical", color: ThemeColors.blueLight },
+        { value: getDataLength('18'), label: "Travel", color: ThemeColors.blueSea },
+        { value: getDataLengthOthers(), label: "Others", color: ThemeColors.yellowThin },
+    ];
+    const dataPieIncome = [
+        { value: getDataLength('1'), label: "Salary", color: ThemeColors.pinkLight },
+        { value: getDataLength('2'), label: "Retirement", color: ThemeColors.primary },
+        { value: getDataLength('4'), label: "Invest", color: ThemeColors.pink },
+        { value: getDataLength('3'), label: "Secondary", color: ThemeColors.blueLight },
+        { value: getDataLength('5'), label: "Electricity", color: ThemeColors.blueSea },
+        { value: getDataLength('6'), label: "Temporary", color: ThemeColors.yellowThin },
+
+    ];
 
     const navigation = useNavigation();
 
@@ -118,21 +116,24 @@ export default function ReportsScreen() {
                 </ThemedView>
                 {dataItem.length === 0 ? null : (
                     <>
-                    { activeTab == 'Spent'  && (
-                        
-                        <PieChart dataChart={dataPieSpent} showContent />
-                    )}
-                    { activeTab == 'Income'  && (
+                        {activeTab == 'Spent' && (
 
-                    <PieChart dataChart={dataPieIncome} showContent />
-                    )}
-                    
+                            <PieChart dataChart={dataPieSpent} showContent />
+                        )}
+                        {activeTab == 'Income' && (
+
+                            <PieChart dataChart={dataPieIncome} showContent />
+                        )}
+
                     </>
                 )}
 
                 {dataItem.length === 0 && (
                     <>
-                        <EmptyComponent />
+                        <Image source={require("@/assets/images/not-found-image.png")} style={{
+                            width: 400,
+                            height: 300
+                        }} />
                         <ThemedText style={{ textAlign: 'center', fontWeight: 600 }}>Empty Data</ThemedText>
                     </>
 
